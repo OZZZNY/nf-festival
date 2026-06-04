@@ -1,8 +1,12 @@
 <!DOCTYPE html>
-<html>
+<html lang="ja">
+
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Dream BEGUS</title>
 
 <style>
@@ -60,6 +64,7 @@ font-size:20px;
 }
 
 </style>
+
 </head>
 
 <body>
@@ -74,7 +79,9 @@ font-size:20px;
 
 <input id="keyword" placeholder="あいことば">
 
-<button onclick="reserve()">予約する</button>
+<button onclick="reserve()">
+予約する
+</button>
 
 </div>
 
@@ -82,60 +89,8 @@ font-size:20px;
 
 </div>
 
-<script>
-
-window.onload = async function(){
-
-const savedId =
-localStorage.getItem("ticketId");
-
-if(savedId){
-
-document.getElementById("formArea").style.display = "none";
-
-document.getElementById("result").innerHTML = `
-<h2>予約済み</h2>
-<p>整理番号：${savedId}</p>
-`;
-
-}
-
-}
-
-async function reserve(){
-
-const name =
-document.getElementById("name").value;
-
-const keyword =
-document.getElementById("keyword").value;
-
-const res = await fetch("https://script.google.com/macros/s/AKfycby2GYeUMEk5QVjW3WpctBAjDi2yNshmFFypHePjeGAKtLx401EoUBYLqwjq4F3_xjiE7Q/exec",{
-
-method:"POST",
-
-body:JSON.stringify({
-name:name,
-keyword:keyword
-})
-
-});
-
-const data = await res.json();
-
-localStorage.setItem("ticketId", data.id);
-
-document.getElementById("formArea").style.display = "none";
-
-document.getElementById("result").innerHTML = `
-<h2>予約完了！</h2>
-<p>整理番号：${data.id}</p>
-<p>現在待機：${data.waiting}組</p>
-`;
-
-}
-
-</script>
+<script src="script.js"></script>
 
 </body>
+
 </html>
