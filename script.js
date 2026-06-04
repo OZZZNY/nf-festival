@@ -19,8 +19,9 @@ document.getElementById("name").value;
 const keyword =
 document.getElementById("keyword").value;
 
-const res = await fetch("https://script.google.com/macros/s/AKfycby2GYeUMEk5QVjW3WpctBAjDi2yNshmFFypHePjeGAKtLx401EoUBYLqwjq4F3_xjiE7Q/exec",{
-
+const res = await fetch(
+"https://script.google.com/macros/s/AKfycby2GYeUMEk5QVjW3WpctBAjDi2yNshmFFypHePjeGAKtLx401EoUBYLqwjq4F3_xjiE7Q/exec",
+{
 method:"POST",
 
 body:JSON.stringify({
