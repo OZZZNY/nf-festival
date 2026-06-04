@@ -1,3 +1,4 @@
+alert("script.js 読み込み成功");
 window.onload = async function(){
 
 const savedId =
