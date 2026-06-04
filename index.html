@@ -84,6 +84,24 @@ font-size:20px;
 
 <script>
 
+window.onload = async function(){
+
+const savedId =
+localStorage.getItem("ticketId");
+
+if(savedId){
+
+document.getElementById("formArea").style.display = "none";
+
+document.getElementById("result").innerHTML = `
+<h2>予約済み</h2>
+<p>整理番号：${savedId}</p>
+`;
+
+}
+
+}
+
 async function reserve(){
 
 const name =
@@ -104,6 +122,8 @@ keyword:keyword
 });
 
 const data = await res.json();
+
+localStorage.setItem("ticketId", data.id);
 
 document.getElementById("formArea").style.display = "none";
 
