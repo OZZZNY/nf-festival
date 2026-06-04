@@ -43,7 +43,7 @@ checkStatus(data.id);
 async function checkStatus(id){
 
 const res = await fetch(
-"GASのURL?mode=status&id=" + id
+"https://script.google.com/macros/s/AKfycby2GYeUMEk5QVjW3WpctBAjDi2yNshmFFypHePjeGAKtLx401EoUBYLqwjq4F3_xjiE7Q/exec?mode=status&id=" + id
 );
 
 const data = await res.json();
