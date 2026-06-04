@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dream BEGUS</title>
+
+<style>
+body{
+background:#0a0a0a;
+color:#d4af37;
+font-family:sans-serif;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+margin:0;
+}
+
+.box{
+background:#111;
+padding:20px;
+border-radius:20px;
+width:90%;
+max-width:400px;
+border:2px solid #d4af37;
+}
+
+input,button{
+width:100%;
+padding:12px;
+margin-top:10px;
+box-sizing:border-box;
+}
+
+button{
+background:#d4af37;
+border:none;
+font-size:18px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="box">
+
+<h1>Dream BEGUS</h1>
+
+<input id="name" placeholder="名前">
+
+<input id="keyword" placeholder="あいことば">
+
+<button onclick="reserve()">予約する</button>
+
+<div id="result"></div>
+
+</div>
+
+<script>
+
+async function reserve(){
+
+const name =
+document.getElementById("name").value;
+
+const keyword =
+document.getElementById("keyword").value;
+
+const res = await fetch("GASのURL",{
+
+method:"POST",
+
+body:JSON.stringify({
+name:name,
+keyword:keyword
+})
+
+});
+
+const data = await res.json();
+
+document.getElementById("result").innerHTML =
+`
+整理番号：${data.id}<br>
+待機人数：${data.waiting}
+`;
+
+}
+
+</script>
+
+</body>
+</html>
