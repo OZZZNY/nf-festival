@@ -1,17 +1,10 @@
-window.onload = async function(){
-
-const savedId =
-localStorage.getItem("ticketId");
-
-if(savedId){
-
-checkStatus(savedId);
-
-}
-
-}
-
 async function reserve(){
+
+const button =
+document.querySelector("button");
+
+button.disabled = true;
+button.innerText = "送信中...";
 
 const name =
 document.getElementById("name").value;
@@ -42,48 +35,5 @@ document.getElementById("result").innerHTML = `
 <p>整理番号：${data.id}</p>
 <p>現在待機：${data.waiting}組</p>
 `;
-
-}
-
-async function checkStatus(id){
-
-const res = await fetch(
-"https://script.google.com/macros/s/AKfycby2GYeUMEk5QVjW3WpctBAjDi2yNshmFFypHePjeGAKtLx401EoUBYLqwjq4F3_xjiE7Q/exec?mode=status&id=" + id
-);
-
-const data = await res.json();
-
-let text = "";
-
-if(data.status === "WAITING"){
-
-text = `
-<h2>待機中</h2>
-<p>整理番号：${id}</p>
-<p>現在待機：${data.waiting}組</p>
-`;
-
-}
-
-if(data.status === "CALLED"){
-
-text = `
-<h2>お呼び出し中です！</h2>
-<p>整理番号：${id}</p>
-`;
-
-}
-
-if(data.status === "DONE"){
-
-text = `
-<h2>ご案内済みです</h2>
-`;
-
-}
-
-document.getElementById("formArea").style.display = "none";
-
-document.getElementById("result").innerHTML = text;
 
 }
