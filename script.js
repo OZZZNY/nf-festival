@@ -6,12 +6,7 @@ localStorage.getItem("ticketId");
 
 if(savedId){
 
-document.getElementById("formArea").style.display = "none";
-
-document.getElementById("result").innerHTML = `
-<h2>予約済み</h2>
-<p>整理番号：${savedId}</p>
-`;
+checkStatus(savedId);
 
 }
 
@@ -59,7 +54,7 @@ document.getElementById("result").innerHTML = `
 
 }catch(error){
 
-alert("送信に失敗しました");
+alert("送信失敗");
 
 button.disabled = false;
 button.innerText = "予約する";
@@ -67,3 +62,75 @@ button.innerText = "予約する";
 }
 
 }
+
+async function checkStatus(id){
+
+const res = await fetch(
+"https://script.google.com/macros/s/AKfycby2GYeUMEk5QVjW3WpctBAjDi2yNshmFFypHePjeGAKtLx401EoUBYLqwjq4F3_xjiE7Q/exec?mode=status&id=" + id
+);
+
+const data = await res.json();
+
+let text = "";
+
+if(data.status === "WAITING"){
+
+text = `
+<h2>待機中</h2>
+<p>整理番号：${id}</p>
+<p>現在待機：${data.waiting}組</p>
+`;
+
+}
+
+if(data.status === "CALLED"){
+
+text = `
+<h2>お呼び出し中です！</h2>
+<p>整理番号：${id}</p>
+`;
+
+}
+
+if(data.status === "DONE"){
+
+localStorage.removeItem("ticketId");
+
+document.getElementById("formArea").style.display = "block";
+
+text = `
+<h2>ご案内済みです</h2>
+<p>再度予約可能です</p>
+`;
+
+}
+
+if(data.status === "CANCEL"){
+
+localStorage.removeItem("ticketId");
+
+document.getElementById("formArea").style.display = "block";
+
+text = `
+<h2>予約はキャンセルされました</h2>
+<p>再度予約可能です</p>
+`;
+
+}
+
+document.getElementById("result").innerHTML = text;
+
+}
+
+setInterval(async function(){
+
+const savedId =
+localStorage.getItem("ticketId");
+
+if(savedId){
+
+checkStatus(savedId);
+
+}
+
+},5000);
