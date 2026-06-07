@@ -1,7 +1,7 @@
 // =============================
 // 設定：GASのデプロイURLに変更してください
 // =============================
-const API_URL = "https://script.google.com/macros/s/https://script.google.com/macros/s/AKfycby2GYeUMEk5QVjW3WpctBAjDi2yNshmFFypHePjeGAKtLx401EoUBYLqwjq4F3_xjiE7Q/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycby2GYeUMEk5QVjW3WpctBAjDi2yNshmFFypHePjeGAKtLx401EoUBYLqwjq4F3_xjiE7Q/exec";
 
 // ポーリング間隔（ミリ秒）
 const POLLING_INTERVAL = 5000;
