@@ -416,13 +416,13 @@ function renderTickets(tickets) {
     return;
   }
 
-const order = { CALLED: 0, WAITING: 1, DONE: 2, CANCEL: 3 };
-tickets.sort((a, b) => (order[a.status] ?? 9) - (order[b.status] ?? 9));
+  const order = { CALLED: 0, WAITING: 1, DONE: 2, CANCEL: 3 };
+  tickets.sort((a, b) => (order[a.status] ?? 9) - (order[b.status] ?? 9));
 
-// DONE と CANCEL を非表示
-tickets = tickets.filter(t => t.status === "WAITING" || t.status === "CALLED");
+    // DONE と CANCEL を非表示
+    tickets = tickets.filter(t => t.status === "WAITING" || t.status === "CALLED");
 
-list.innerHTML = tickets.map(t => `
+  list.innerHTML = tickets.map(t => `
     <div class="ticket">
       <div class="ticket-id">${t.id}</div>
       <div class="ticket-name">${t.name}</div>
