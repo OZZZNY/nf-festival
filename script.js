@@ -1,9 +1,11 @@
 const API_URL = "https://script.google.com/macros/s/AKfycbz4bVzgirKaluud8WJ1xq74MzPY7AhATepYnyBiyKcrfGfzukfJNv7ZNhZDkQzgt8xnUQ/exec";
 
 const POLLING_INTERVAL = 5000;
-
 let pollingTimer = null;
 
+// =============================
+// ページ読み込み時
+// =============================
 window.addEventListener("load", () => {
   const savedId = localStorage.getItem("ticketId");
   if (savedId) {
@@ -12,6 +14,34 @@ window.addEventListener("load", () => {
   }
 });
 
+// =============================
+// JSONP通信
+// =============================
+function jsonpGet(url) {
+  return new Promise((resolve, reject) => {
+    const cbName = "cb_" + Math.random().toString(36).slice(2);
+    const script = document.createElement("script");
+
+    window[cbName] = (data) => {
+      resolve(data);
+      delete window[cbName];
+      document.body.removeChild(script);
+    };
+
+    script.onerror = () => {
+      reject(new Error("JSONP失敗"));
+      delete window[cbName];
+      document.body.removeChild(script);
+    };
+
+    script.src = `${url}&callback=${cbName}`;
+    document.body.appendChild(script);
+  });
+}
+
+// =============================
+// 予約
+// =============================
 async function reserve() {
   const name    = document.getElementById("name").value.trim();
   const keyword = document.getElementById("keyword").value.trim();
@@ -24,13 +54,9 @@ async function reserve() {
   showResult("<h2>送信中...</h2>");
 
   try {
-    const response = await fetch(API_URL, {
-      method: "POST",
-      redirect: "follow",        // ← GASのリダイレクトに対応
-      body: JSON.stringify({ name, keyword }),
-    });
-
-    const data = await response.json();
+    const data = await jsonpGet(
+      `${API_URL}?mode=reserve&name=${encodeURIComponent(name)}&keyword=${encodeURIComponent(keyword)}`
+    );
 
     localStorage.setItem("ticketId", data.id);
     document.getElementById("formArea").style.display = "none";
@@ -42,11 +68,12 @@ async function reserve() {
   }
 }
 
+// =============================
+// ポーリング
+// =============================
 function startPolling(id) {
   checkStatus(id);
-  pollingTimer = setInterval(() => {
-    checkStatus(id);
-  }, POLLING_INTERVAL);
+  pollingTimer = setInterval(() => checkStatus(id), POLLING_INTERVAL);
 }
 
 function stopPolling() {
@@ -58,12 +85,7 @@ function stopPolling() {
 
 async function checkStatus(id) {
   try {
-    const response = await fetch(
-      `${API_URL}?mode=status&id=${id}`,
-      { redirect: "follow" }     // ← GASのリダイレクトに対応
-    );
-
-    const data = await response.json();
+    const data = await jsonpGet(`${API_URL}?mode=status&id=${id}`);
     let text = "";
 
     if (data.status === "WAITING") {
@@ -72,41 +94,34 @@ async function checkStatus(id) {
         <p>整理番号：${id}</p>
         <p>現在待機：${data.waiting}組</p>
       `;
-    }
-    else if (data.status === "CALLED") {
+    } else if (data.status === "CALLED") {
       text = `
         <h2>お呼び出し中です！</h2>
         <p>整理番号：${id}</p>
       `;
-    }
-    else if (data.status === "DONE") {
+    } else if (data.status === "DONE") {
       stopPolling();
       localStorage.removeItem("ticketId");
       document.getElementById("formArea").style.display = "block";
-      text = `
-        <h2>ご案内済みです</h2>
-        <p>再度予約可能です</p>
-      `;
-    }
-    else if (data.status === "CANCEL") {
+      text = `<h2>ご案内済みです</h2><p>再度予約可能です</p>`;
+    } else if (data.status === "CANCEL") {
       stopPolling();
       localStorage.removeItem("ticketId");
       document.getElementById("formArea").style.display = "block";
-      text = `
-        <h2>予約はキャンセルされました</h2>
-      `;
-    }
-    else {
+      text = `<h2>予約はキャンセルされました</h2>`;
+    } else {
       text = `<h2>⚠️ 不明なステータスです</h2>`;
     }
 
     showResult(text);
-
   } catch (e) {
     console.error("ステータス確認エラー:", e);
   }
 }
 
+// =============================
+// 結果表示
+// =============================
 function showResult(html) {
   document.getElementById("result").innerHTML = html;
 }
