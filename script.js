@@ -1,4 +1,4 @@
-const API_URL = "https://script.google.com/macros/s/AKfycbzx9TkSfeeCDCZJJ--UAtC-SWDQibu7edxzQ-TLbcaNkSV71_PENwmwL-fL_h-6ls8eYw/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycbz4bVzgirKaluud8WJ1xq74MzPY7AhATepYnyBiyKcrfGfzukfJNv7ZNhZDkQzgt8xnUQ/exec";
 
 const POLLING_INTERVAL = 5000;
 
