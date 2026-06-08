@@ -21,33 +21,29 @@ function jsonpGet(url) {
   return new Promise((resolve, reject) => {
     const cbName = "cb_" + Math.random().toString(36).slice(2);
     const script = document.createElement("script");
-
     window[cbName] = (data) => {
       resolve(data);
       delete window[cbName];
       document.body.removeChild(script);
     };
-
     script.onerror = () => {
       reject(new Error("JSONP失敗"));
       delete window[cbName];
       document.body.removeChild(script);
     };
-
     script.src = `${url}&callback=${cbName}`;
     document.body.appendChild(script);
   });
 }
 
 // =============================
-// 予約
+// 予約（あいことばなし）
 // =============================
 async function reserve() {
-  const name    = document.getElementById("name").value.trim();
-  const keyword = document.getElementById("keyword").value.trim();
+  const name = document.getElementById("name").value.trim();
 
-  if (!name || !keyword) {
-    showResult("<h2>⚠️ 名前とあいことばを入力してください</h2>");
+  if (!name) {
+    showResult("<h2>⚠️ 名前を入力してください</h2>");
     return;
   }
 
@@ -55,7 +51,7 @@ async function reserve() {
 
   try {
     const data = await jsonpGet(
-      `${API_URL}?mode=reserve&name=${encodeURIComponent(name)}&keyword=${encodeURIComponent(keyword)}`
+      `${API_URL}?mode=reserve&name=${encodeURIComponent(name)}`
     );
 
     localStorage.setItem("ticketId", data.id);
