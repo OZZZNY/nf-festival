@@ -96,6 +96,7 @@ function renderTickets(tickets) {
     <div class="ticket">
       <div class="ticket-id">${t.id}</div>
       <div class="ticket-name">${t.name}</div>
+      <div style="font-size:12px;color:var(--text-dim)">${t.time}</div>
       <div class="ticket-status status-${t.status}">${labelOf(t.status)}</div>
       <div class="ticket-actions">
         ${t.status === "CALLED" ? `
