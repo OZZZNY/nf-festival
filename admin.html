@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dream BEGUS 管理画面</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&family=Share+Tech+Mono&display=swap');
+
+  :root {
+    --gold: #d4af37;
+    --gold-dim: #a07d1c;
+    --bg: #0a0a0a;
+    --surface: #111;
+    --surface2: #1a1a1a;
+    --border: #2a2a2a;
+    --text: #e0e0e0;
+    --text-dim: #888;
+    --waiting: #d4af37;
+    --called: #4fc3f7;
+    --done: #81c784;
+    --cancel: #e57373;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Noto Sans JP', sans-serif;
+    min-height: 100vh;
+  }
+
+  /* ========== ログイン画面 ========== */
+  #loginScreen {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: var(--bg);
+  }
+
+  .login-box {
+    background: var(--surface);
+    border: 1px solid var(--gold);
+    border-radius: 16px;
+    padding: 40px;
+    width: 90%;
+    max-width: 360px;
+    text-align: center;
+  }
+
+  .login-box h1 {
+    color: var(--gold);
+    font-size: 20px;
+    margin-bottom: 6px;
+    letter-spacing: 2px;
+  }
+
+  .login-box p {
+    color: var(--text-dim);
+    font-size: 13px;
+    margin-bottom: 28px;
+  }
+
+  .login-box input {
+    width: 100%;
+    padding: 12px 16px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: white;
+    font-size: 16px;
+    margin-bottom: 14px;
+    outline: none;
+    transition: border-color 0.2s;
+    font-family: 'Share Tech Mono', monospace;
+    letter-spacing: 3px;
+  }
+
+  .login-box input:focus {
+    border-color: var(--gold);
+  }
+
+  .login-box button {
+    width: 100%;
+    padding: 12px;
+    background: var(--gold);
+    color: #000;
+    border: none;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: opacity 0.2s;
+  }
+
+  .login-box button:hover { opacity: 0.85; }
+
+  .login-error {
+    color: var(--cancel);
+    font-size: 13px;
+    margin-top: 12px;
+    display: none;
+  }
+
+  /* ========== 管理画面 ========== */
+  #adminScreen { display: none; }
+
+  header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 16px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+
+  header h1 {
+    color: var(--gold);
+    font-size: 16px;
+    letter-spacing: 2px;
+  }
+
+  #logoutBtn {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    padding: 6px 14px;
+    border-radius: 6px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  #logoutBtn:hover {
+    border-color: var(--cancel);
+    color: var(--cancel);
+  }
+
+  .container {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 24px 16px;
+  }
+
+  /* ステータスカード */
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+
+  .stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+    text-align: center;
+  }
+
+  .stat-card .num {
+    font-size: 32px;
+    font-family: 'Share Tech Mono', monospace;
+    color: var(--gold);
+    line-height: 1;
+  }
+
+  .stat-card .label {
+    font-size: 11px;
+    color: var(--text-dim);
+    margin-top: 6px;
+  }
+
+  /* 操作ボタン */
+  .actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+
+  .btn {
+    padding: 14px;
+    border: none;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: opacity 0.2s, transform 0.1s;
+    font-family: 'Noto Sans JP', sans-serif;
+  }
+
+  .btn:active { transform: scale(0.97); }
+  .btn:hover { opacity: 0.85; }
+
+  .btn-call {
+    background: var(--gold);
+    color: #000;
+    grid-column: 1 / -1;
+    font-size: 17px;
+    padding: 16px;
+  }
+
+  .btn-clear {
+    background: var(--surface2);
+    color: var(--cancel);
+    border: 1px solid var(--cancel);
+  }
+
+  .btn-refresh {
+    background: var(--surface2);
+    color: var(--text-dim);
+    border: 1px solid var(--border);
+  }
+
+  /* 予約リスト */
+  .section-title {
+    font-size: 12px;
+    color: var(--text-dim);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .ticket-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .ticket {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    animation: fadeIn 0.3s ease;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(4px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .ticket-id {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 18px;
+    color: var(--gold);
+    min-width: 36px;
+  }
+
+  .ticket-name {
+    flex: 1;
+    font-size: 15px;
+  }
+
+  .ticket-status {
+    font-size: 12px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-weight: 700;
+  }
+
+  .status-WAITING { background: #2a2000; color: var(--waiting); }
+  .status-CALLED  { background: #002a3a; color: var(--called); }
+  .status-DONE    { background: #002200; color: var(--done); }
+  .status-CANCEL  { background: #2a0000; color: var(--cancel); }
+
+  .ticket-cancel {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .ticket-cancel:hover {
+    border-color: var(--cancel);
+    color: var(--cancel);
+  }
+
+  .empty {
+    text-align: center;
+    color: var(--text-dim);
+    padding: 32px;
+    font-size: 14px;
+  }
+
+  /* トースト通知 */
+  #toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(80px);
+    background: var(--surface);
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    padding: 10px 24px;
+    border-radius: 20px;
+    font-size: 14px;
+    transition: transform 0.3s ease;
+    z-index: 100;
+    white-space: nowrap;
+  }
+
+  #toast.show {
+    transform: translateX(-50%) translateY(0);
+  }
+</style>
+</head>
+<body>
+
+<!-- ログイン画面 -->
+<div id="loginScreen">
+  <div class="login-box">
+    <h1>♦ BEGUS ADMIN ♦</h1>
+    <p>管理者パスワードを入力してください</p>
+    <input type="password" id="passwordInput" placeholder="パスワード" onkeydown="if(event.key==='Enter')login()">
+    <button onclick="login()">ログイン</button>
+    <div class="login-error" id="loginError">パスワードが違います</div>
+  </div>
+</div>
+
+<!-- 管理画面 -->
+<div id="adminScreen">
+  <header>
+    <h1>♦ Dream BEGUS 管理画面</h1>
+    <button id="logoutBtn" onclick="logout()">ログアウト</button>
+  </header>
+
+  <div class="container">
+
+    <!-- 統計 -->
+    <div class="stats">
+      <div class="stat-card">
+        <div class="num" id="countWaiting">-</div>
+        <div class="label">待機中</div>
+      </div>
+      <div class="stat-card">
+        <div class="num" id="countCalled">-</div>
+        <div class="label">呼び出し中</div>
+      </div>
+      <div class="stat-card">
+        <div class="num" id="countTotal">-</div>
+        <div class="label">本日合計</div>
+      </div>
+    </div>
+
+    <!-- 操作ボタン -->
+    <div class="actions">
+      <button class="btn btn-call" onclick="callNext()">▶ 次の人を呼ぶ</button>
+      <button class="btn btn-refresh" onclick="loadTickets()">↻ 更新</button>
+      <button class="btn btn-clear" onclick="clearAll()">⚠ 全データ削除</button>
+    </div>
+
+    <!-- 予約リスト -->
+    <div class="section-title">予約一覧</div>
+    <div class="ticket-list" id="ticketList">
+      <div class="empty">読み込み中...</div>
+    </div>
+
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+const API_URL = "https://script.google.com/macros/s/AKfycby2GYeUMEk5QVjW3WpctBAjDi2yNshmFFypHePjeGAKtLx401EoUBYLqwjq4F3_xjiE7Q/exec";
+const PASSWORD = "adminbegs";
+let autoRefreshTimer = null;
+
+// =============================
+// 認証
+// =============================
+function login() {
+  const input = document.getElementById("passwordInput").value;
+  if (input === PASSWORD) {
+    document.getElementById("loginScreen").style.display = "none";
+    document.getElementById("adminScreen").style.display = "block";
+    sessionStorage.setItem("adminAuth", "1");
+    startAutoRefresh();
+    loadTickets();
+  } else {
+    document.getElementById("loginError").style.display = "block";
+  }
+}
+
+function logout() {
+  sessionStorage.removeItem("adminAuth");
+  stopAutoRefresh();
+  document.getElementById("adminScreen").style.display = "none";
+  document.getElementById("loginScreen").style.display = "flex";
+  document.getElementById("passwordInput").value = "";
+}
+
+// セッション維持
+window.addEventListener("load", () => {
+  if (sessionStorage.getItem("adminAuth") === "1") {
+    document.getElementById("loginScreen").style.display = "none";
+    document.getElementById("adminScreen").style.display = "block";
+    startAutoRefresh();
+    loadTickets();
+  }
+});
+
+// =============================
+// JSONP通信
+// =============================
+function jsonp(url) {
+  return new Promise((resolve, reject) => {
+    const cbName = "cb_" + Math.random().toString(36).slice(2);
+    const script = document.createElement("script");
+    window[cbName] = (data) => {
+      resolve(data);
+      delete window[cbName];
+      document.body.removeChild(script);
+    };
+    script.onerror = () => {
+      reject(new Error("通信エラー"));
+      delete window[cbName];
+      document.body.removeChild(script);
+    };
+    script.src = `${url}&callback=${cbName}`;
+    document.body.appendChild(script);
+  });
+}
+
+// =============================
+// 予約一覧を取得
+// =============================
+async function loadTickets() {
+  try {
+    const data = await jsonp(`${API_URL}?mode=list`);
+    renderTickets(data.tickets);
+    updateStats(data.tickets);
+  } catch(e) {
+    showToast("読み込みエラー");
+  }
+}
+
+function renderTickets(tickets) {
+  const list = document.getElementById("ticketList");
+  if (!tickets || tickets.length === 0) {
+    list.innerHTML = '<div class="empty">予約はありません</div>';
+    return;
+  }
+
+  // WAITING・CALLED を上に、DONE・CANCEL を下に
+  const order = { CALLED: 0, WAITING: 1, DONE: 2, CANCEL: 3 };
+  tickets.sort((a, b) => (order[a.status] ?? 9) - (order[b.status] ?? 9));
+
+  list.innerHTML = tickets.map(t => `
+    <div class="ticket">
+      <div class="ticket-id">${t.id}</div>
+      <div class="ticket-name">${t.name}</div>
+      <div class="ticket-status status-${t.status}">${labelOf(t.status)}</div>
+      ${t.status === "WAITING" || t.status === "CALLED" ? `
+        <button class="ticket-cancel" onclick="cancelTicket(${t.id})" title="キャンセル">✕</button>
+      ` : ""}
+    </div>
+  `).join("");
+}
+
+function updateStats(tickets) {
+  if (!tickets) return;
+  document.getElementById("countWaiting").textContent =
+    tickets.filter(t => t.status === "WAITING").length;
+  document.getElementById("countCalled").textContent =
+    tickets.filter(t => t.status === "CALLED").length;
+  document.getElementById("countTotal").textContent = tickets.length;
+}
+
+function labelOf(status) {
+  return { WAITING: "待機中", CALLED: "呼び出し中", DONE: "案内済み", CANCEL: "キャンセル" }[status] || status;
+}
+
+// =============================
+// 操作
+// =============================
+async function callNext() {
+  try {
+    const data = await jsonp(`${API_URL}?mode=callNext`);
+    if (data.called) {
+      showToast(`No.${data.called} を呼び出しました`);
+    } else {
+      showToast("待機中の方はいません");
+    }
+    loadTickets();
+  } catch(e) {
+    showToast("エラーが発生しました");
+  }
+}
+
+async function cancelTicket(id) {
+  if (!confirm(`No.${id} をキャンセルしますか？`)) return;
+  try {
+    await jsonp(`${API_URL}?mode=cancel&id=${id}`);
+    showToast(`No.${id} をキャンセルしました`);
+    loadTickets();
+  } catch(e) {
+    showToast("エラーが発生しました");
+  }
+}
+
+async function clearAll() {
+  if (!confirm("全データを削除しますか？\nこの操作は取り消せません。")) return;
+  try {
+    await jsonp(`${API_URL}?mode=clear`);
+    showToast("全データを削除しました");
+    loadTickets();
+  } catch(e) {
+    showToast("エラーが発生しました");
+  }
+}
+
+// =============================
+// 自動更新（10秒ごと）
+// =============================
+function startAutoRefresh() {
+  autoRefreshTimer = setInterval(loadTickets, 10000);
+}
+
+function stopAutoRefresh() {
+  if (autoRefreshTimer) clearInterval(autoRefreshTimer);
+}
+
+// =============================
+// トースト通知
+// =============================
+function showToast(msg) {
+  const toast = document.getElementById("toast");
+  toast.textContent = msg;
+  toast.classList.add("show");
+  setTimeout(() => toast.classList.remove("show"), 2500);
+}
+</script>
+</body>
+</html>
