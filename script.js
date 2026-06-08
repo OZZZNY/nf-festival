@@ -37,7 +37,7 @@ function jsonpGet(url) {
 }
 
 // =============================
-// 予約（あいことばなし）
+// 予約
 // =============================
 async function reserve() {
   const name = document.getElementById("name").value.trim();
@@ -105,6 +105,11 @@ async function checkStatus(id) {
       localStorage.removeItem("ticketId");
       document.getElementById("formArea").style.display = "block";
       text = `<h2>予約はキャンセルされました</h2>`;
+    } else if (data.status === "NOTFOUND") {
+      stopPolling();
+      localStorage.removeItem("ticketId");
+      document.getElementById("formArea").style.display = "block";
+      text = `<h2>予約情報が見つかりません</h2><p>再度予約してください</p>`;
     } else {
       text = `<h2>⚠️ 不明なステータスです</h2>`;
     }
