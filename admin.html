@@ -9,7 +9,6 @@
 
   :root {
     --gold: #d4af37;
-    --gold-dim: #a07d1c;
     --bg: #0a0a0a;
     --surface: #111;
     --surface2: #1a1a1a;
@@ -31,13 +30,12 @@
     min-height: 100vh;
   }
 
-  /* ========== ログイン画面 ========== */
+  /* ログイン */
   #loginScreen {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background: var(--bg);
   }
 
   .login-box {
@@ -50,61 +48,29 @@
     text-align: center;
   }
 
-  .login-box h1 {
-    color: var(--gold);
-    font-size: 20px;
-    margin-bottom: 6px;
-    letter-spacing: 2px;
-  }
-
-  .login-box p {
-    color: var(--text-dim);
-    font-size: 13px;
-    margin-bottom: 28px;
-  }
+  .login-box h1 { color: var(--gold); font-size: 20px; margin-bottom: 6px; letter-spacing: 2px; }
+  .login-box p  { color: var(--text-dim); font-size: 13px; margin-bottom: 28px; }
 
   .login-box input {
-    width: 100%;
-    padding: 12px 16px;
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    color: white;
-    font-size: 16px;
-    margin-bottom: 14px;
-    outline: none;
+    width: 100%; padding: 12px 16px;
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 8px; color: white; font-size: 16px;
+    margin-bottom: 14px; outline: none;
+    font-family: 'Share Tech Mono', monospace; letter-spacing: 3px;
     transition: border-color 0.2s;
-    font-family: 'Share Tech Mono', monospace;
-    letter-spacing: 3px;
   }
-
-  .login-box input:focus {
-    border-color: var(--gold);
-  }
+  .login-box input:focus { border-color: var(--gold); }
 
   .login-box button {
-    width: 100%;
-    padding: 12px;
-    background: var(--gold);
-    color: #000;
-    border: none;
-    border-radius: 8px;
-    font-size: 15px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: opacity 0.2s;
+    width: 100%; padding: 12px;
+    background: var(--gold); color: #000;
+    border: none; border-radius: 8px;
+    font-size: 15px; font-weight: 700; cursor: pointer;
   }
 
-  .login-box button:hover { opacity: 0.85; }
+  .login-error { color: var(--cancel); font-size: 13px; margin-top: 12px; display: none; }
 
-  .login-error {
-    color: var(--cancel);
-    font-size: 13px;
-    margin-top: 12px;
-    display: none;
-  }
-
-  /* ========== 管理画面 ========== */
+  /* 管理画面 */
   #adminScreen { display: none; }
 
   header {
@@ -114,133 +80,124 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    position: sticky;
-    top: 0;
-    z-index: 10;
+    position: sticky; top: 0; z-index: 10;
   }
 
-  header h1 {
-    color: var(--gold);
-    font-size: 16px;
-    letter-spacing: 2px;
-  }
+  header h1 { color: var(--gold); font-size: 16px; letter-spacing: 2px; }
 
   #logoutBtn {
-    background: transparent;
-    border: 1px solid var(--border);
-    color: var(--text-dim);
-    padding: 6px 14px;
-    border-radius: 6px;
-    font-size: 13px;
-    cursor: pointer;
+    background: transparent; border: 1px solid var(--border);
+    color: var(--text-dim); padding: 6px 14px;
+    border-radius: 6px; font-size: 13px; cursor: pointer;
     transition: all 0.2s;
   }
+  #logoutBtn:hover { border-color: var(--cancel); color: var(--cancel); }
 
-  #logoutBtn:hover {
-    border-color: var(--cancel);
-    color: var(--cancel);
-  }
+  .container { max-width: 700px; margin: 0 auto; padding: 24px 16px; }
 
-  .container {
-    max-width: 700px;
-    margin: 0 auto;
-    padding: 24px 16px;
-  }
-
-  /* ステータスカード */
+  /* 統計 */
   .stats {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
-    margin-bottom: 24px;
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 12px; margin-bottom: 24px;
   }
 
   .stat-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 16px;
-    text-align: center;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 12px; padding: 16px; text-align: center;
   }
 
   .stat-card .num {
-    font-size: 32px;
-    font-family: 'Share Tech Mono', monospace;
-    color: var(--gold);
-    line-height: 1;
+    font-size: 32px; font-family: 'Share Tech Mono', monospace;
+    color: var(--gold); line-height: 1;
+  }
+  .stat-card .label { font-size: 11px; color: var(--text-dim); margin-top: 6px; }
+
+  /* 呼び出し人数設定 */
+  .call-setting {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
   }
 
-  .stat-card .label {
-    font-size: 11px;
+  .call-setting label {
+    font-size: 13px;
     color: var(--text-dim);
-    margin-top: 6px;
+    white-space: nowrap;
+  }
+
+  .call-count-btns {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .count-btn {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--text);
+    width: 32px; height: 32px;
+    border-radius: 6px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .count-btn:hover { border-color: var(--gold); color: var(--gold); }
+
+  #callCountDisplay {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 22px;
+    color: var(--gold);
+    min-width: 28px;
+    text-align: center;
   }
 
   /* 操作ボタン */
-  .actions {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-    margin-bottom: 24px;
-  }
+  .actions { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 24px; }
 
   .btn {
-    padding: 14px;
-    border: none;
-    border-radius: 10px;
-    font-size: 15px;
-    font-weight: 700;
-    cursor: pointer;
+    padding: 14px; border: none; border-radius: 10px;
+    font-size: 15px; font-weight: 700; cursor: pointer;
     transition: opacity 0.2s, transform 0.1s;
     font-family: 'Noto Sans JP', sans-serif;
   }
-
   .btn:active { transform: scale(0.97); }
-  .btn:hover { opacity: 0.85; }
+  .btn:hover  { opacity: 0.85; }
 
   .btn-call {
-    background: var(--gold);
-    color: #000;
-    grid-column: 1 / -1;
-    font-size: 17px;
-    padding: 16px;
+    background: var(--gold); color: #000;
+    grid-column: 1 / -1; font-size: 17px; padding: 16px;
   }
 
   .btn-clear {
-    background: var(--surface2);
-    color: var(--cancel);
+    background: var(--surface2); color: var(--cancel);
     border: 1px solid var(--cancel);
   }
 
   .btn-refresh {
-    background: var(--surface2);
-    color: var(--text-dim);
+    background: var(--surface2); color: var(--text-dim);
     border: 1px solid var(--border);
   }
 
   /* 予約リスト */
   .section-title {
-    font-size: 12px;
-    color: var(--text-dim);
-    letter-spacing: 1px;
-    text-transform: uppercase;
+    font-size: 12px; color: var(--text-dim);
+    letter-spacing: 1px; text-transform: uppercase;
     margin-bottom: 12px;
   }
 
-  .ticket-list {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
+  .ticket-list { display: flex; flex-direction: column; gap: 8px; }
 
   .ticket {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 14px 16px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 10px; padding: 14px 16px;
+    display: flex; align-items: center; gap: 12px;
     animation: fadeIn 0.3s ease;
   }
 
@@ -251,21 +208,14 @@
 
   .ticket-id {
     font-family: 'Share Tech Mono', monospace;
-    font-size: 18px;
-    color: var(--gold);
-    min-width: 36px;
+    font-size: 18px; color: var(--gold); min-width: 36px;
   }
 
-  .ticket-name {
-    flex: 1;
-    font-size: 15px;
-  }
+  .ticket-name { flex: 1; font-size: 15px; }
 
   .ticket-status {
-    font-size: 12px;
-    padding: 4px 10px;
-    border-radius: 20px;
-    font-weight: 700;
+    font-size: 12px; padding: 4px 10px;
+    border-radius: 20px; font-weight: 700;
   }
 
   .status-WAITING { background: #2a2000; color: var(--waiting); }
@@ -273,63 +223,51 @@
   .status-DONE    { background: #002200; color: var(--done); }
   .status-CANCEL  { background: #2a0000; color: var(--cancel); }
 
-  .ticket-cancel {
+  /* チケット操作ボタン群 */
+  .ticket-actions { display: flex; gap: 6px; }
+
+  .ticket-btn {
     background: transparent;
     border: 1px solid var(--border);
     color: var(--text-dim);
-    width: 28px;
-    height: 28px;
+    padding: 4px 10px;
     border-radius: 6px;
     cursor: pointer;
-    font-size: 14px;
+    font-size: 12px;
     transition: all 0.2s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .ticket-cancel:hover {
-    border-color: var(--cancel);
-    color: var(--cancel);
-  }
-
-  .empty {
-    text-align: center;
-    color: var(--text-dim);
-    padding: 32px;
-    font-size: 14px;
-  }
-
-  /* トースト通知 */
-  #toast {
-    position: fixed;
-    bottom: 24px;
-    left: 50%;
-    transform: translateX(-50%) translateY(80px);
-    background: var(--surface);
-    border: 1px solid var(--gold);
-    color: var(--gold);
-    padding: 10px 24px;
-    border-radius: 20px;
-    font-size: 14px;
-    transition: transform 0.3s ease;
-    z-index: 100;
     white-space: nowrap;
   }
 
-  #toast.show {
-    transform: translateX(-50%) translateY(0);
+  .ticket-btn.done-btn:hover  { border-color: var(--done);   color: var(--done); }
+  .ticket-btn.cancel-btn:hover { border-color: var(--cancel); color: var(--cancel); }
+
+  .empty {
+    text-align: center; color: var(--text-dim);
+    padding: 32px; font-size: 14px;
   }
+
+  /* トースト */
+  #toast {
+    position: fixed; bottom: 24px; left: 50%;
+    transform: translateX(-50%) translateY(80px);
+    background: var(--surface); border: 1px solid var(--gold);
+    color: var(--gold); padding: 10px 24px;
+    border-radius: 20px; font-size: 14px;
+    transition: transform 0.3s ease;
+    z-index: 100; white-space: nowrap;
+  }
+  #toast.show { transform: translateX(-50%) translateY(0); }
 </style>
 </head>
 <body>
 
-<!-- ログイン画面 -->
+<!-- ログイン -->
 <div id="loginScreen">
   <div class="login-box">
     <h1>♦ BEGUS ADMIN ♦</h1>
     <p>管理者パスワードを入力してください</p>
-    <input type="password" id="passwordInput" placeholder="パスワード" onkeydown="if(event.key==='Enter')login()">
+    <input type="password" id="passwordInput" placeholder="パスワード"
+      onkeydown="if(event.key==='Enter')login()">
     <button onclick="login()">ログイン</button>
     <div class="login-error" id="loginError">パスワードが違います</div>
   </div>
@@ -360,6 +298,17 @@
       </div>
     </div>
 
+    <!-- 呼び出し人数設定 -->
+    <div class="call-setting">
+      <label>同時呼び出し人数：</label>
+      <div class="call-count-btns">
+        <button class="count-btn" onclick="changeCallCount(-1)">－</button>
+        <div id="callCountDisplay">1</div>
+        <button class="count-btn" onclick="changeCallCount(1)">＋</button>
+      </div>
+      <span style="font-size:12px;color:var(--text-dim)">人まとめて呼び出す</span>
+    </div>
+
     <!-- 操作ボタン -->
     <div class="actions">
       <button class="btn btn-call" onclick="callNext()">▶ 次の人を呼ぶ</button>
@@ -382,6 +331,15 @@
 const API_URL = "https://script.google.com/macros/s/AKfycbz4bVzgirKaluud8WJ1xq74MzPY7AhATepYnyBiyKcrfGfzukfJNv7ZNhZDkQzgt8xnUQ/exec";
 const PASSWORD = "adminbegs";
 let autoRefreshTimer = null;
+let callCount = 1;
+
+// =============================
+// 呼び出し人数
+// =============================
+function changeCallCount(delta) {
+  callCount = Math.max(1, Math.min(10, callCount + delta));
+  document.getElementById("callCountDisplay").textContent = callCount;
+}
 
 // =============================
 // 認証
@@ -407,7 +365,6 @@ function logout() {
   document.getElementById("passwordInput").value = "";
 }
 
-// セッション維持
 window.addEventListener("load", () => {
   if (sessionStorage.getItem("adminAuth") === "1") {
     document.getElementById("loginScreen").style.display = "none";
@@ -420,7 +377,7 @@ window.addEventListener("load", () => {
 // =============================
 // JSONP通信
 // =============================
-function jsonp(url) {
+function jsonpGet(url) {
   return new Promise((resolve, reject) => {
     const cbName = "cb_" + Math.random().toString(36).slice(2);
     const script = document.createElement("script");
@@ -440,11 +397,11 @@ function jsonp(url) {
 }
 
 // =============================
-// 予約一覧を取得
+// 予約一覧
 // =============================
 async function loadTickets() {
   try {
-    const data = await jsonp(`${API_URL}?mode=list`);
+    const data = await jsonpGet(`${API_URL}?mode=list`);
     renderTickets(data.tickets);
     updateStats(data.tickets);
   } catch(e) {
@@ -459,7 +416,6 @@ function renderTickets(tickets) {
     return;
   }
 
-  // WAITING・CALLED を上に、DONE・CANCEL を下に
   const order = { CALLED: 0, WAITING: 1, DONE: 2, CANCEL: 3 };
   tickets.sort((a, b) => (order[a.status] ?? 9) - (order[b.status] ?? 9));
 
@@ -468,9 +424,14 @@ function renderTickets(tickets) {
       <div class="ticket-id">${t.id}</div>
       <div class="ticket-name">${t.name}</div>
       <div class="ticket-status status-${t.status}">${labelOf(t.status)}</div>
-      ${t.status === "WAITING" || t.status === "CALLED" ? `
-        <button class="ticket-cancel" onclick="cancelTicket(${t.id})" title="キャンセル">✕</button>
-      ` : ""}
+      <div class="ticket-actions">
+        ${t.status === "CALLED" ? `
+          <button class="ticket-btn done-btn" onclick="completeTicket(${t.id})">案内済み</button>
+        ` : ""}
+        ${t.status === "WAITING" || t.status === "CALLED" ? `
+          <button class="ticket-btn cancel-btn" onclick="cancelTicket(${t.id})">✕</button>
+        ` : ""}
+      </div>
     </div>
   `).join("");
 }
@@ -493,9 +454,9 @@ function labelOf(status) {
 // =============================
 async function callNext() {
   try {
-    const data = await jsonp(`${API_URL}?mode=callNext`);
-    if (data.called) {
-      showToast(`No.${data.called} を呼び出しました`);
+    const data = await jsonpGet(`${API_URL}?mode=callNext&count=${callCount}`);
+    if (data.called && data.called.length > 0) {
+      showToast(`No.${data.called.join(", ")} を呼び出しました`);
     } else {
       showToast("待機中の方はいません");
     }
@@ -505,10 +466,20 @@ async function callNext() {
   }
 }
 
+async function completeTicket(id) {
+  try {
+    await jsonpGet(`${API_URL}?mode=complete&id=${id}`);
+    showToast(`No.${id} を案内済みにしました`);
+    loadTickets();
+  } catch(e) {
+    showToast("エラーが発生しました");
+  }
+}
+
 async function cancelTicket(id) {
   if (!confirm(`No.${id} をキャンセルしますか？`)) return;
   try {
-    await jsonp(`${API_URL}?mode=cancel&id=${id}`);
+    await jsonpGet(`${API_URL}?mode=cancel&id=${id}`);
     showToast(`No.${id} をキャンセルしました`);
     loadTickets();
   } catch(e) {
@@ -519,7 +490,7 @@ async function cancelTicket(id) {
 async function clearAll() {
   if (!confirm("全データを削除しますか？\nこの操作は取り消せません。")) return;
   try {
-    await jsonp(`${API_URL}?mode=clear`);
+    await jsonpGet(`${API_URL}?mode=clear`);
     showToast("全データを削除しました");
     loadTickets();
   } catch(e) {
@@ -528,7 +499,7 @@ async function clearAll() {
 }
 
 // =============================
-// 自動更新（10秒ごと）
+// 自動更新
 // =============================
 function startAutoRefresh() {
   autoRefreshTimer = setInterval(loadTickets, 10000);
@@ -539,7 +510,7 @@ function stopAutoRefresh() {
 }
 
 // =============================
-// トースト通知
+// トースト
 // =============================
 function showToast(msg) {
   const toast = document.getElementById("toast");
