@@ -54,6 +54,18 @@ async function reserve() {
       `${API_URL}?mode=reserve&name=${encodeURIComponent(name)}`
     );
 
+    if (data.error === "CLOSED") {
+      showResult("<h2>受付終了</h2><p>本日の受付は終了しました</p>");
+      document.getElementById("formArea").style.display = "none";
+      return;
+    }
+
+    if (data.error === "FULL") {
+      showResult("<h2>満員です</h2><p>現在予約を受け付けられません</p>");
+      document.getElementById("formArea").style.display = "none";
+      return;
+    }
+
     localStorage.setItem("ticketId", data.id);
     document.getElementById("formArea").style.display = "none";
     startPolling(data.id);
