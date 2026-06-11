@@ -19,6 +19,8 @@
     --called: #4fc3f7;
     --done: #81c784;
     --cancel: #e57373;
+    --open: #81c784;
+    --closed: #e57373;
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -30,22 +32,13 @@
     min-height: 100vh;
   }
 
-  /* ログイン */
   #loginScreen {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+    display: flex; justify-content: center; align-items: center; height: 100vh;
   }
 
   .login-box {
-    background: var(--surface);
-    border: 1px solid var(--gold);
-    border-radius: 16px;
-    padding: 40px;
-    width: 90%;
-    max-width: 360px;
-    text-align: center;
+    background: var(--surface); border: 1px solid var(--gold);
+    border-radius: 16px; padding: 40px; width: 90%; max-width: 360px; text-align: center;
   }
 
   .login-box h1 { color: var(--gold); font-size: 20px; margin-bottom: 6px; letter-spacing: 2px; }
@@ -54,32 +47,24 @@
   .login-box input {
     width: 100%; padding: 12px 16px;
     background: var(--surface2); border: 1px solid var(--border);
-    border-radius: 8px; color: white; font-size: 16px;
-    margin-bottom: 14px; outline: none;
-    font-family: 'Share Tech Mono', monospace; letter-spacing: 3px;
+    border-radius: 8px; color: white; font-size: 16px; margin-bottom: 14px;
+    outline: none; font-family: 'Share Tech Mono', monospace; letter-spacing: 3px;
     transition: border-color 0.2s;
   }
   .login-box input:focus { border-color: var(--gold); }
 
   .login-box button {
-    width: 100%; padding: 12px;
-    background: var(--gold); color: #000;
-    border: none; border-radius: 8px;
-    font-size: 15px; font-weight: 700; cursor: pointer;
+    width: 100%; padding: 12px; background: var(--gold); color: #000;
+    border: none; border-radius: 8px; font-size: 15px; font-weight: 700; cursor: pointer;
   }
 
   .login-error { color: var(--cancel); font-size: 13px; margin-top: 12px; display: none; }
 
-  /* 管理画面 */
   #adminScreen { display: none; }
 
   header {
-    background: var(--surface);
-    border-bottom: 1px solid var(--border);
-    padding: 16px 24px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    background: var(--surface); border-bottom: 1px solid var(--border);
+    padding: 16px 24px; display: flex; justify-content: space-between; align-items: center;
     position: sticky; top: 0; z-index: 10;
   }
 
@@ -88,17 +73,14 @@
   #logoutBtn {
     background: transparent; border: 1px solid var(--border);
     color: var(--text-dim); padding: 6px 14px;
-    border-radius: 6px; font-size: 13px; cursor: pointer;
-    transition: all 0.2s;
+    border-radius: 6px; font-size: 13px; cursor: pointer; transition: all 0.2s;
   }
   #logoutBtn:hover { border-color: var(--cancel); color: var(--cancel); }
 
   .container { max-width: 700px; margin: 0 auto; padding: 24px 16px; }
 
-  /* 統計 */
   .stats {
-    display: grid; grid-template-columns: repeat(3, 1fr);
-    gap: 12px; margin-bottom: 24px;
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 16px;
   }
 
   .stat-card {
@@ -107,65 +89,83 @@
   }
 
   .stat-card .num {
-    font-size: 32px; font-family: 'Share Tech Mono', monospace;
-    color: var(--gold); line-height: 1;
+    font-size: 32px; font-family: 'Share Tech Mono', monospace; color: var(--gold); line-height: 1;
   }
   .stat-card .label { font-size: 11px; color: var(--text-dim); margin-top: 6px; }
 
-  /* 呼び出し人数設定 */
+  .config-panel {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 12px; padding: 16px 20px; margin-bottom: 16px;
+    display: flex; flex-direction: column; gap: 14px;
+  }
+
+  .config-row {
+    display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+  }
+
+  .config-label { font-size: 13px; color: var(--text-dim); }
+
+  .reception-toggle { display: flex; gap: 8px; }
+
+  .toggle-btn {
+    padding: 7px 18px; border-radius: 20px; border: 1px solid var(--border);
+    font-size: 13px; font-weight: 700; cursor: pointer;
+    background: var(--surface2); color: var(--text-dim);
+    transition: all 0.2s; font-family: 'Noto Sans JP', sans-serif;
+  }
+
+  .toggle-btn.active-open   { background: #002200; border-color: var(--open);   color: var(--open); }
+  .toggle-btn.active-closed { background: #2a0000; border-color: var(--closed); color: var(--closed); }
+
+  .limit-row { display: flex; align-items: center; gap: 8px; }
+
+  .limit-input {
+    width: 64px; padding: 6px 10px;
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 8px; color: white; font-size: 16px;
+    font-family: 'Share Tech Mono', monospace; text-align: center; outline: none;
+    transition: border-color 0.2s;
+  }
+  .limit-input:focus { border-color: var(--gold); }
+
+  .limit-save {
+    padding: 6px 14px; background: var(--gold); color: #000;
+    border: none; border-radius: 8px; font-size: 13px; font-weight: 700;
+    cursor: pointer; transition: opacity 0.2s;
+  }
+  .limit-save:hover { opacity: 0.85; }
+
+  .limit-status { font-size: 12px; color: var(--text-dim); }
+
   .call-setting {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 16px 20px;
-    margin-bottom: 16px;
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    flex-wrap: wrap;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 12px; padding: 16px 20px; margin-bottom: 16px;
+    display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
   }
 
-  .call-setting label {
-    font-size: 13px;
-    color: var(--text-dim);
-    white-space: nowrap;
-  }
+  .call-setting label { font-size: 13px; color: var(--text-dim); white-space: nowrap; }
 
-  .call-count-btns {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
+  .call-count-btns { display: flex; align-items: center; gap: 8px; }
 
   .count-btn {
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    color: var(--text);
-    width: 32px; height: 32px;
-    border-radius: 6px;
-    font-size: 18px;
-    cursor: pointer;
-    transition: all 0.2s;
+    background: var(--surface2); border: 1px solid var(--border);
+    color: var(--text); width: 32px; height: 32px; border-radius: 6px;
+    font-size: 18px; cursor: pointer; transition: all 0.2s;
     display: flex; align-items: center; justify-content: center;
   }
   .count-btn:hover { border-color: var(--gold); color: var(--gold); }
 
   #callCountDisplay {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 22px;
-    color: var(--gold);
-    min-width: 28px;
-    text-align: center;
+    font-family: 'Share Tech Mono', monospace; font-size: 22px;
+    color: var(--gold); min-width: 28px; text-align: center;
   }
 
-  /* 操作ボタン */
   .actions { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 24px; }
 
   .btn {
     padding: 14px; border: none; border-radius: 10px;
     font-size: 15px; font-weight: 700; cursor: pointer;
-    transition: opacity 0.2s, transform 0.1s;
-    font-family: 'Noto Sans JP', sans-serif;
+    transition: opacity 0.2s, transform 0.1s; font-family: 'Noto Sans JP', sans-serif;
   }
   .btn:active { transform: scale(0.97); }
   .btn:hover  { opacity: 0.85; }
@@ -176,20 +176,16 @@
   }
 
   .btn-clear {
-    background: var(--surface2); color: var(--cancel);
-    border: 1px solid var(--cancel);
+    background: var(--surface2); color: var(--cancel); border: 1px solid var(--cancel);
   }
 
   .btn-refresh {
-    background: var(--surface2); color: var(--text-dim);
-    border: 1px solid var(--border);
+    background: var(--surface2); color: var(--text-dim); border: 1px solid var(--border);
   }
 
-  /* 予約リスト */
   .section-title {
-    font-size: 12px; color: var(--text-dim);
-    letter-spacing: 1px; text-transform: uppercase;
-    margin-bottom: 12px;
+    font-size: 12px; color: var(--text-dim); letter-spacing: 1px;
+    text-transform: uppercase; margin-bottom: 12px;
   }
 
   .ticket-list { display: flex; flex-direction: column; gap: 8px; }
@@ -207,15 +203,15 @@
   }
 
   .ticket-id {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 18px; color: var(--gold); min-width: 36px;
+    font-family: 'Share Tech Mono', monospace; font-size: 18px; color: var(--gold); min-width: 36px;
   }
 
-  .ticket-name { flex: 1; font-size: 15px; }
+  .ticket-info { flex: 1; }
+  .ticket-name { font-size: 15px; }
+  .ticket-time { font-size: 11px; color: var(--text-dim); margin-top: 2px; }
 
   .ticket-status {
-    font-size: 12px; padding: 4px 10px;
-    border-radius: 20px; font-weight: 700;
+    font-size: 12px; padding: 4px 10px; border-radius: 20px; font-weight: 700;
   }
 
   .status-WAITING { background: #2a2000; color: var(--waiting); }
@@ -223,38 +219,24 @@
   .status-DONE    { background: #002200; color: var(--done); }
   .status-CANCEL  { background: #2a0000; color: var(--cancel); }
 
-  /* チケット操作ボタン群 */
   .ticket-actions { display: flex; gap: 6px; }
 
   .ticket-btn {
-    background: transparent;
-    border: 1px solid var(--border);
-    color: var(--text-dim);
-    padding: 4px 10px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 12px;
-    transition: all 0.2s;
-    white-space: nowrap;
+    background: transparent; border: 1px solid var(--border);
+    color: var(--text-dim); padding: 4px 10px; border-radius: 6px;
+    cursor: pointer; font-size: 12px; transition: all 0.2s; white-space: nowrap;
   }
-
-  .ticket-btn.done-btn:hover  { border-color: var(--done);   color: var(--done); }
+  .ticket-btn.done-btn:hover   { border-color: var(--done);   color: var(--done); }
   .ticket-btn.cancel-btn:hover { border-color: var(--cancel); color: var(--cancel); }
 
-  .empty {
-    text-align: center; color: var(--text-dim);
-    padding: 32px; font-size: 14px;
-  }
+  .empty { text-align: center; color: var(--text-dim); padding: 32px; font-size: 14px; }
 
-  /* トースト */
   #toast {
     position: fixed; bottom: 24px; left: 50%;
     transform: translateX(-50%) translateY(80px);
     background: var(--surface); border: 1px solid var(--gold);
-    color: var(--gold); padding: 10px 24px;
-    border-radius: 20px; font-size: 14px;
-    transition: transform 0.3s ease;
-    z-index: 100; white-space: nowrap;
+    color: var(--gold); padding: 10px 24px; border-radius: 20px; font-size: 14px;
+    transition: transform 0.3s ease; z-index: 100; white-space: nowrap;
   }
   #toast.show { transform: translateX(-50%) translateY(0); }
 </style>
@@ -282,7 +264,6 @@
 
   <div class="container">
 
-    <!-- 統計 -->
     <div class="stats">
       <div class="stat-card">
         <div class="num" id="countWaiting">-</div>
@@ -298,7 +279,24 @@
       </div>
     </div>
 
-    <!-- 呼び出し人数設定 -->
+    <div class="config-panel">
+      <div class="config-row">
+        <div class="config-label">受付状態</div>
+        <div class="reception-toggle">
+          <button class="toggle-btn" id="btnOpen"   onclick="setReception('OPEN')">受付中</button>
+          <button class="toggle-btn" id="btnClosed" onclick="setReception('CLOSED')">受付終了</button>
+        </div>
+      </div>
+      <div class="config-row">
+        <div class="config-label">予約上限人数</div>
+        <div class="limit-row">
+          <input type="number" id="limitInput" class="limit-input" min="1" max="999" value="20">
+          <button class="limit-save" onclick="saveLimit()">保存</button>
+          <span class="limit-status" id="limitStatus"></span>
+        </div>
+      </div>
+    </div>
+
     <div class="call-setting">
       <label>同時呼び出し人数：</label>
       <div class="call-count-btns">
@@ -309,14 +307,12 @@
       <span style="font-size:12px;color:var(--text-dim)">人まとめて呼び出す</span>
     </div>
 
-    <!-- 操作ボタン -->
     <div class="actions">
       <button class="btn btn-call" onclick="callNext()">▶ 次の人を呼ぶ</button>
       <button class="btn btn-refresh" onclick="loadTickets()">↻ 更新</button>
       <button class="btn btn-clear" onclick="clearAll()">⚠ 全データ削除</button>
     </div>
 
-    <!-- 予約リスト -->
     <div class="section-title">予約一覧</div>
     <div class="ticket-list" id="ticketList">
       <div class="empty">読み込み中...</div>
@@ -327,8 +323,6 @@
 
 <div id="toast"></div>
 
-<script src="admin.js">
-
-</script>
+<script src="admin.js"></script>
 </body>
 </html>
